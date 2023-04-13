@@ -1,3 +1,4 @@
+const fs = require("fs");
 const { By, until } = require("selenium-webdriver");
 require("chromedriver");
 
@@ -66,7 +67,13 @@ async function sendEmailAndSave(driver, index) {
     console.log("Apartment saved....");
     driver.navigate().back();
   } catch (error) {
-    console.log(error);
+    const errorContent = `[${new Date()}] <<Sending email & saving>> - ${error}`;
+    fs.appendFile("./logs.txt", errorContent, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
+
     driver.navigate().back();
   }
 }
