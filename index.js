@@ -42,6 +42,7 @@ async function getAppartment() {
       }
     }
 
+    console.log(`[${new Date()}] - Finished!`);
     driver.close();
   } catch (error) {
     const errorContent = `[${new Date()}] - ${error}`;
