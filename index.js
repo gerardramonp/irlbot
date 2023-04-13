@@ -45,7 +45,7 @@ async function getAppartment() {
     driver.close();
   } catch (error) {
     const errorContent = `[${new Date()}] - ${error}`;
-    fs.writeFile("/Users/joe/test.txt", errorContent, (err) => {
+    fs.appendFile("./logs.txt", errorContent, (err) => {
       if (err) {
         console.error(err);
       }
