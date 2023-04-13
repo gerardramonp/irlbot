@@ -24,6 +24,7 @@ async function getAppartment() {
 
     await sleep(500);
 
+    let sentCount = 0;
     for (let index = 0; index < 10; index++) {
       await sleep(1000);
 
@@ -39,10 +40,17 @@ async function getAppartment() {
 
       if (currentApartmentSaved === "Save") {
         await sendEmailAndSave(driver, index);
+        sentCount += 1;
       }
     }
 
     console.log(`[${new Date()}] - Finished!`);
+    const successContent = `>>[${new Date()}]<< Finished, emails count: ${sentCount}`;
+    fs.appendFile("./logs.txt", successContent, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
     driver.close();
   } catch (error) {
     const errorContent = `[${new Date()}] - ${error}`;
