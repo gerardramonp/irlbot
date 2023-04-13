@@ -1,3 +1,4 @@
+const fs = require("fs");
 const { By, Builder, Key } = require("selenium-webdriver");
 require("chromedriver");
 
@@ -23,10 +24,6 @@ async function getAppartment() {
 
     await sleep(500);
 
-    // loop through the apartments
-    const apartmentSaveds = await driver.findElements(
-      By.xpath("//a/div/div[3]/div/button/span")
-    );
     for (let index = 0; index < 10; index++) {
       await sleep(1000);
 
@@ -41,15 +38,18 @@ async function getAppartment() {
         .getText();
 
       if (currentApartmentSaved === "Save") {
-        console.log("Sending email and saving apartment....");
-
         await sendEmailAndSave(driver, index);
       }
     }
 
     driver.close();
   } catch (error) {
-    console.log(error);
+    const errorContent = `[${new Date()}] - ${error}`;
+    fs.writeFile("/Users/joe/test.txt", errorContent, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
     driver.close();
   }
 }
