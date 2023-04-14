@@ -47,8 +47,12 @@ async function getAppartment() {
       }
     }
 
-    console.log(`[${new Date()}] - Finished!`);
-    const successContent = `>>[${new Date()}]<< Finished, new apartments: ${sentCount}`;
+    console.log(
+      `[${new Date().toLocaleString("es-ES", { timeZone: "CET" })}] - Finished!`
+    );
+    const successContent = `>>[${new Date().toLocaleString("es-ES", {
+      timeZone: "CET",
+    })}]<< Finished, new apartments: ${sentCount}`;
     saveLog(successContent);
     driver.close();
   } catch (error) {

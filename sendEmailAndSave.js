@@ -69,7 +69,9 @@ async function sendEmailAndSave(driver, index) {
     driver.navigate().back();
   } catch (error) {
     console.log(error);
-    const errorContent = `[${new Date()}] <<Sending email & saving>> - ${error}`;
+    const errorContent = `[${new Date().toLocaleString("es-ES", {
+      timeZone: "CET",
+    })}] <<Sending email & saving>> - ${error}`;
     saveLog(errorContent);
     driver.navigate().back();
   }
