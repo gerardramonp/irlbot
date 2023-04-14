@@ -3,6 +3,7 @@ const { By, until } = require("selenium-webdriver");
 require("chromedriver");
 
 const sleep = require("./sleep");
+const saveLog = require("./log");
 
 const FULL_NAME = "Gerard Ramon Monte";
 const EMAIL = "gerardramonirl@gmail.com";
@@ -21,12 +22,12 @@ async function sendEmailAndSave(driver, index) {
       )
       .click();
 
-    await sleep(3000);
+    await driver.manage().setTimeouts({ implicit: 3000 });
 
     const emailButtonWait = await driver.wait(
       until.elementLocated(
         By.xpath(
-          `//*[@id="__next"]/main/div[3]/div[2]/div/div[1]/div[2]/div[2]/button`
+          '//*[@id="__next"]/main/div[3]/div[2]/div/div[1]/div[2]/div[2]/button'
         )
       ),
       10000
@@ -67,13 +68,9 @@ async function sendEmailAndSave(driver, index) {
     console.log("Apartment saved....");
     driver.navigate().back();
   } catch (error) {
+    console.log(error);
     const errorContent = `[${new Date()}] <<Sending email & saving>> - ${error}`;
-    fs.appendFile("./logs.txt", errorContent, (err) => {
-      if (err) {
-        console.error(err);
-      }
-    });
-
+    saveLog(errorContent);
     driver.navigate().back();
   }
 }

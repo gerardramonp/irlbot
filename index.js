@@ -4,15 +4,18 @@ require("chromedriver");
 
 const login = require("./login");
 const sleep = require("./sleep");
+const saveLog = require("./log");
 
 const sendEmailAndSave = require("./sendEmailAndSave");
+
+const URL =
+  "https://www.daft.ie/property-for-rent/dublin-city?rentalPrice_to=1700&sort=publishDateDesc&rentalPrice_from=900";
 
 async function getAppartment() {
   let driver = await new Builder().forBrowser("chrome").build();
   try {
-    await driver.get(
-      "https://www.daft.ie/property-for-rent/dublin-city?rentalPrice_to=1700&sort=publishDateDesc&rentalPrice_from=900"
-    );
+    await driver.manage().window().maximize();
+    await driver.get(URL);
 
     await sleep(500);
 
@@ -45,20 +48,12 @@ async function getAppartment() {
     }
 
     console.log(`[${new Date()}] - Finished!`);
-    const successContent = `>>[${new Date()}]<< Finished, emails count: ${sentCount}`;
-    fs.appendFile("./logs.txt", successContent, (err) => {
-      if (err) {
-        console.error(err);
-      }
-    });
+    const successContent = `>>[${new Date()}]<< Finished, new apartments: ${sentCount}`;
+    saveLog(successContent);
     driver.close();
   } catch (error) {
     const errorContent = `[${new Date()}] - ${error}`;
-    fs.appendFile("./logs.txt", errorContent, (err) => {
-      if (err) {
-        console.error(err);
-      }
-    });
+    saveLog(errorContent);
     driver.close();
   }
 }
